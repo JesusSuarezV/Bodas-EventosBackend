@@ -29,61 +29,43 @@ public class PrendaControlador {
 	@Autowired
 	private CategoriaServicio categoriaServicio;
 
-	@GetMapping({ "/prendas" })
-	public String listarCategorias(Model model) {
 
-		model.addAttribute("prendas", servicio.listarTodasLasPrendas());
-		return "Prendas/Prenda"; // Este es el nombre de la plantilla Thymeleaf
-	}
-
-	@GetMapping("/prendas/nueva_prenda")
+	@GetMapping("/prenda/nueva_prenda")
 	public String mostrarFormularioDeRegistrarPrendas(Model modelo) {
 		System.out.println("Soy un Test");
 		Prenda prenda = new Prenda();
-		List<Categoria> categorias = categoriaServicio.listarTodasLasCategorias(); // Obtener la lista de categorías
+		List<Categoria> categorias = categoriaServicio.listarTodasLasCategorias(); 
 		modelo.addAttribute("categorias", categorias);
 		modelo.addAttribute("prenda", prenda);
 		return "Prendas/Crear_Prenda";
 
 	}
 
-	/*
-	 * @PostMapping("/categorias") public String guardarCategoria(@ModelAttribute
-	 * Categoria categoria, @RequestParam("imagen") MultipartFile imagen) { //
-	 * Verificar si se ha cargado una imagen System.out.println("OlaKAse2"); if
-	 * (!imagen.isEmpty()) { try { // Obtener los bytes de la imagen byte[] bytes =
-	 * imagen.getBytes(); // Guardar los bytes en el atributo imagen de la entidad
-	 * categoria.setImagen(bytes); } catch (IOException e) { // Manejar errores de
-	 * lectura de la imagen } }
-	 */
-
-	@PostMapping("/prendas")
+	@PostMapping("/prenda/guardar")
 	public String guardarPrenda(@RequestParam("id") int id, @RequestParam("nombre") String nombre,
 			@RequestParam("imagen") MultipartFile imagen, @RequestParam("id_categoria") int idCategoria)
 			throws IOException {
 
 
-		// Convierte la imagen a un array de bytes
 		byte[] imagenBytes = imagen.getBytes();
 
 		Categoria categoria = categoriaServicio.obtenerCategoriaPorId(idCategoria);
 
-		// Crea una instancia de Categoria y asigna los valores
+		id = servicio.obtenerMaximoId() + 1;
 		Prenda prenda = new Prenda(id, nombre, imagenBytes, categoria, true);
-		
 		servicio.guardarPrenda(prenda);
-		return "redirect:/prendas";
+		return "redirect:/categoria/" + idCategoria + "/prenda";
 
 	}
 
-	@GetMapping("/prendas/editar/{id}")
+	@GetMapping("/prenda/editar/{id}")
 	public String mostrarFormularioDeEditar(@PathVariable int id, Model modelo) {
 		System.out.println("TEST");
 		modelo.addAttribute("prenda", servicio.obtenerPrendaPorId(id));
 		return "Prendas/Editar_Prenda";
 	}
 
-	@PostMapping("/prendas/{id}")
+	@PostMapping("/prenda/{id}/actualizar")
 	public String actualizarPrenda(@PathVariable int id, @RequestParam("nombre") String nombre,
 			@RequestParam("imagen") MultipartFile imagen) throws IOException {
 		// Validar si la categoría con el ID proporcionado existe
@@ -93,20 +75,21 @@ public class PrendaControlador {
 		// Actualizar los campos de la categoría existente
 		prendaExistente.setNombre(nombre);
 		prendaExistente.setImagen(imagen.getBytes());
-		
+		int idCategoria = prendaExistente.getCategoria().getId();
 
 		servicio.actualizarPrenda(prendaExistente);
 
-		return "redirect:/prendas";
+		return "redirect:/categoria/" + idCategoria + "/prenda";
 	}
 
-	@GetMapping("/prendas/{id}")
+	@GetMapping("/prenda/eliminar/{id}")
 	public String ocultarPrenda(@PathVariable int id) {
 		servicio.ocultarPrenda(id);
-		return "redirect:/prendas";
+		int idCategoria = servicio.obtenerPrendaPorId(id).getCategoria().getId();
+		return "redirect:/categoria/" + idCategoria + "/prenda";
 	}
 	
-	@GetMapping("/categorias/prendas/{categoriaId}")
+	@GetMapping("/categoria/{categoriaId}/prenda")
 	public String mostrarPrendasDeCategoria(@PathVariable int categoriaId, Model model) {
 	    // Lógica para obtener las prendas de la categoría utilizando el ID
 	    Categoria categoria = categoriaServicio.obtenerCategoriaPorId(categoriaId);

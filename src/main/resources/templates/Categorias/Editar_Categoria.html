@@ -11,7 +11,7 @@
 			class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
 			<h1 class="text-center">Edición de Categoría</h1>
 			<div class="card-body">
-				<form th:action="@{/categorias/{id}(id=${categoria.id})}"
+				<form th:action="@{'/categoria/' + ${categoria.id} + '/actualizar'}"
 					th:object="${categoria}" method="POST"
 					enctype="multipart/form-data">
 

@@ -10,9 +10,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.app.web.entidad.Categoria;
 import com.app.web.entidad.Prenda;
+import com.app.web.entidad.PrendaTalla;
 import com.app.web.repositorio.CategoriaRepositorio;
 import com.app.web.servicio.CategoriaServicio;
 import com.app.web.servicio.PrendaServicio;
+import com.app.web.servicio.PrendaTallaServicio;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -28,16 +30,17 @@ public class CategoriaControlador {
 	private CategoriaServicio servicio;
 	@Autowired
 	private PrendaServicio prendaServicio;
+	@Autowired
+	private PrendaTallaServicio prendaTallaServicio;
 
-	@GetMapping({ "/categorias"})
+	@GetMapping({ "/categoria" })
 	public String listarCategorias(Model model) {
-
 
 		model.addAttribute("categorias", servicio.listarTodasLasCategorias());
 		return "Categorias/Categoria"; // Este es el nombre de la plantilla Thymeleaf
 	}
 
-	@GetMapping("/categorias/nueva_categoria")
+	@GetMapping("/categoria/nueva_categoria")
 	public String mostrarFormularioDeRegistrarCategorias(Model modelo) {
 
 		Categoria categoria = new Categoria();
@@ -46,10 +49,9 @@ public class CategoriaControlador {
 
 	}
 
-
-	@PostMapping("/categorias")
-	public String guardarCategoria(@RequestParam("nombre") String nombre,
-			@RequestParam("imagen") MultipartFile imagen) throws IOException {
+	@PostMapping("/categoria/guardar")
+	public String guardarCategoria(@RequestParam("nombre") String nombre, @RequestParam("imagen") MultipartFile imagen)
+			throws IOException {
 
 		int maxId = servicio.obtenerMaximoId();
 		System.out.println(maxId);
@@ -61,59 +63,52 @@ public class CategoriaControlador {
 		// Crea una instancia de Categoria y asigna los valores
 		Categoria categoria = new Categoria(id, nombre, imagenBytes, true);
 
-		
 		servicio.guardarCategoria(categoria);
-		return "redirect:categorias";
+		return "redirect:/categoria";
 
 	}
 
-	@GetMapping("/categorias/editar/{id}")
+	@GetMapping("/categoria/{id}/editar")
 	public String mostrarFormularioDeEditar(@PathVariable int id, Model modelo) {
 		System.out.println("TEST");
 		modelo.addAttribute("categoria", servicio.obtenerCategoriaPorId(id));
 		return "Categorias/Editar_Categoria";
 	}
 
-	@PostMapping("/categorias/{id}")
+	@PostMapping("/categoria/{id}/actualizar")
 	public String actualizarCategoria(@PathVariable int id, @RequestParam("nombre") String nombre,
 			@RequestParam("imagen") MultipartFile imagen) throws IOException {
-	    // Validar si la categoría con el ID proporcionado existe
+		// Validar si la categoría con el ID proporcionado existe
 		System.out.println("TEST2");
-	    Categoria categoriaExistente = servicio.obtenerCategoriaPorId(id);
-	    
-	    
-	    // Actualizar los campos de la categoría existente
-	    categoriaExistente.setNombre(nombre);
-	    categoriaExistente.setImagen(imagen.getBytes());
-	    
-	    
-	    servicio.actualizarCategoria(categoriaExistente);
+		Categoria categoriaExistente = servicio.obtenerCategoriaPorId(id);
 
-	    return "redirect:/categorias";
+		// Actualizar los campos de la categoría existente
+		categoriaExistente.setNombre(nombre);
+		categoriaExistente.setImagen(imagen.getBytes());
+
+		servicio.actualizarCategoria(categoriaExistente);
+
+		return "redirect:/categoria";
 	}
-	
-	@GetMapping("/categorias/{id}")
+
+	@GetMapping("/categoria/{id}/ocultar")
 	public String ocultarCategoria(@PathVariable int id) {
-		
+
 		Categoria categoria = servicio.obtenerCategoriaPorId(id);
-		
+
 		List<Prenda> prendas = prendaServicio.obtenerPrendasPorCategoria(categoria);
-		
+
 		for (Prenda prenda : prendas) {
-	        prenda.setVisibilidad(false);
-	        prendaServicio.guardarPrenda(prenda); // Puedes guardar la prenda para actualizar su visibilidad
-	    }
-		
+			List<PrendaTalla> prendaTallas = prendaTallaServicio.obtenerPrendaTallaPorPrenda(prenda);
+			for (PrendaTalla prendaTalla : prendaTallas) {
+				prendaTallaServicio.ocultarPrendaTalla(prendaTalla);
+			}
+			prenda.setVisibilidad(false);
+			prendaServicio.guardarPrenda(prenda); // Puedes guardar la prenda para actualizar su visibilidad
+		}
+
 		servicio.ocultarCategoria(id);
-		return "redirect:/categorias";
+		return "redirect:/categoria";
 	}
-	
-	
-	
-	
-
-	
-	
-
 
 }

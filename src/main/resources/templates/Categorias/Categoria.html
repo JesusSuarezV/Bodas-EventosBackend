@@ -25,11 +25,11 @@
 				<td><img
 					th:src="'data:image/jpeg;base64,' + ${categoria.getBase64(categoria.imagen)}"
 					alt="Imagen de la categoría" width="170" height="170"></td>
-				<td><a th:href="@{/categorias/editar/{id}(id=${categoria.id})}"
+				<td><a th:href="@{'/categoria/' + ${categoria.id} + '/editar'}"
 					sec:authorize="hasAuthority('ADMIN')" class="btn btn-info">Editar</a>
-					<a th:href="@{/categorias/{id}(id=${categoria.id})}"
+					<a th:href="@{'/categoria/' + ${categoria.id} + '/ocultar'}"
 					sec:authorize="hasAuthority('ADMIN')" class="btn btn-danger">Eliminar</a>
-					<a th:href="@{'/categorias/prendas/' + ${categoria.id}}"
+					<a th:href="@{'/categoria/' + ${categoria.id} + '/prenda'}"
 					class="btn btn-success	">Ver Prendas</a></td>
 
 			</tr>

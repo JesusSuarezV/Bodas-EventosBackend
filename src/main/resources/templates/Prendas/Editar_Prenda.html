@@ -11,7 +11,7 @@
 			class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
 			<h1 class="text-center">Edición de Prenda</h1>
 			<div class="card-body">
-				<form th:action="@{/prendas/{id}(id=${prenda.id})}"
+				<form th:action="@{'/prenda/' + ${prenda.id} + '/actualizar'}"
 					th:object="${prenda}" method="POST" enctype="multipart/form-data">
 
 					<div class="form-group">

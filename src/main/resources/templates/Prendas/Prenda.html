@@ -25,9 +25,9 @@
 				<td><img
 					th:src="'data:image/jpeg;base64,' + ${prenda.getBase64(prenda.imagen)}"
 					alt="Imagen de la categoría" width="170" height="170"></td>
-				<td><a th:href="@{/prendas/editar/{id}(id=${prenda.id})}"
+				<td><a th:href="@{/prenda/editar/{id}(id=${prenda.id})}"
 					sec:authorize="hasAuthority('ADMIN')" class="btn btn-info">Editar</a>
-					<a th:href="@{/prendas/{id}(id=${prenda.id})}"
+					<a th:href="@{/prenda/eliminar/{id}(id=${prenda.id})}"
 					sec:authorize="hasAuthority('ADMIN')" class="btn btn-danger">Eliminar</a>
 					<a th:href="@{'/categoria/' + ${categoria.id} + '/prenda/' + ${prenda.id}}"
 					class="btn btn-success	">Ver Tallas</a></td>
