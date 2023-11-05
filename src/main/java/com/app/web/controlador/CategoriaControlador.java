@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.app.web.entidad.Categoria;
+import com.app.web.entidad.Prenda;
 import com.app.web.repositorio.CategoriaRepositorio;
 import com.app.web.servicio.CategoriaServicio;
+import com.app.web.servicio.PrendaServicio;
 
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.Base64;
@@ -24,14 +26,15 @@ public class CategoriaControlador {
 
 	@Autowired
 	private CategoriaServicio servicio;
+	@Autowired
+	private PrendaServicio prendaServicio;
 
-	@GetMapping({ "/categorias", "/" })
+	@GetMapping({ "/categorias"})
 	public String listarCategorias(Model model) {
 
-		List<Categoria> categorias = servicio.listarTodasLasCategorias();
 
 		model.addAttribute("categorias", servicio.listarTodasLasCategorias());
-		return "Categoria"; // Este es el nombre de la plantilla Thymeleaf
+		return "Categorias/Categoria"; // Este es el nombre de la plantilla Thymeleaf
 	}
 
 	@GetMapping("/categorias/nueva_categoria")
@@ -39,34 +42,28 @@ public class CategoriaControlador {
 
 		Categoria categoria = new Categoria();
 		modelo.addAttribute("categoria", categoria);
-		System.out.println("OlaKAse1");
-		return "Crear_Categoria";
+		return "Categorias/Crear_Categoria";
 
 	}
 
-	/*
-	 * @PostMapping("/categorias") public String guardarCategoria(@ModelAttribute
-	 * Categoria categoria, @RequestParam("imagen") MultipartFile imagen) { //
-	 * Verificar si se ha cargado una imagen System.out.println("OlaKAse2"); if
-	 * (!imagen.isEmpty()) { try { // Obtener los bytes de la imagen byte[] bytes =
-	 * imagen.getBytes(); // Guardar los bytes en el atributo imagen de la entidad
-	 * categoria.setImagen(bytes); } catch (IOException e) { // Manejar errores de
-	 * lectura de la imagen } }
-	 */
 
 	@PostMapping("/categorias")
-	public String guardarCategoria(@RequestParam("id") int id, @RequestParam("nombre") String nombre,
+	public String guardarCategoria(@RequestParam("nombre") String nombre,
 			@RequestParam("imagen") MultipartFile imagen) throws IOException {
 
+		int maxId = servicio.obtenerMaximoId();
+		System.out.println(maxId);
+		int id = maxId + 1;
+		System.out.println(id);
 		// Convierte la imagen a un array de bytes
 		byte[] imagenBytes = imagen.getBytes();
 
 		// Crea una instancia de Categoria y asigna los valores
-		Categoria categoria = new Categoria(id, nombre, imagenBytes);
+		Categoria categoria = new Categoria(id, nombre, imagenBytes, true);
 
 		
 		servicio.guardarCategoria(categoria);
-		return "redirect:/categorias";
+		return "redirect:categorias";
 
 	}
 
@@ -74,7 +71,7 @@ public class CategoriaControlador {
 	public String mostrarFormularioDeEditar(@PathVariable int id, Model modelo) {
 		System.out.println("TEST");
 		modelo.addAttribute("categoria", servicio.obtenerCategoriaPorId(id));
-		return "Editar_Categoria";
+		return "Categorias/Editar_Categoria";
 	}
 
 	@PostMapping("/categorias/{id}")
@@ -96,10 +93,27 @@ public class CategoriaControlador {
 	}
 	
 	@GetMapping("/categorias/{id}")
-	public String eliminarCategoria(@PathVariable int id) {
-		servicio.eliminarCategoria(id);
+	public String ocultarCategoria(@PathVariable int id) {
+		
+		Categoria categoria = servicio.obtenerCategoriaPorId(id);
+		
+		List<Prenda> prendas = prendaServicio.obtenerPrendasPorCategoria(categoria);
+		
+		for (Prenda prenda : prendas) {
+	        prenda.setVisibilidad(false);
+	        prendaServicio.guardarPrenda(prenda); // Puedes guardar la prenda para actualizar su visibilidad
+	    }
+		
+		servicio.ocultarCategoria(id);
 		return "redirect:/categorias";
 	}
+	
+	
+	
+	
+
+	
+	
 
 
 }

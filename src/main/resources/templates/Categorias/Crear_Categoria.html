@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Registro de Categoría</title>
+<div th:replace="Footer.html"></div>
+<div class="container">
+	<h1>Registro de Categoría</h1>
+	<br> <br>
+	<form th:action="@{/categorias}" th:object="${categoria}" method="POST"
+		enctype="multipart/form-data">
+
+		<div class="form-group">
+			<label for="nombre">Nombre:</label> <input type="text"
+				class="form-control" id="nombre" name="nombre" required>
+		</div>
+		<div class="form-group">
+			<label for="imagen">Imagen:</label> <input type="file"
+				class="form-control-file" id="imagen" name="imagen" required>
+		</div>
+		<button type="submit" class="btn btn-primary">Guardar</button>
+	</form>
+</div>
+</body>
+</html>
+

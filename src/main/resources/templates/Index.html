@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Inicio</title>
+<div th:replace="Footer.html"></div>
+
+<br>
+<br>
+
+<div class="container">
+	<h1 sec:authorize="hasAuthority('ADMIN')">BIENVENIDO ADMINISTRADOR
+		AL SISTEMA DE ADMINISTRACIÓN DE TRAJES DE BODAS & EVENTOS</h1>
+	<h1 sec:authorize="hasAuthority('AUX')">BIENVENIDO AUXILIAR AL
+		SISTEMA DE ADMINISTRACIÓN DE TRAJES DE BODAS & EVENTOS</h1>
+	<br>
+	<h4>
+		Bienvenido <span sec:authentication="principal.username"></span>
+	</h4>
+
+</div>
+
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	crossorigin="anonymous"></script>
+</body>
+</html>

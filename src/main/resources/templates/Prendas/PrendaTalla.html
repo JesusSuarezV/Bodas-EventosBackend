@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Lista de Tallas de Prenda</title>
+<div th:replace="Footer.html"></div>
+<div class="container">
+	<h1>Lista de Tallas de Prenda</h1>
+	<br> <br>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Medida</th>
+				<th>Precio</th>
+				<th>Cantidad</th>
+				<th>Acción</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="prendaTalla : ${prendaTallas}">
+
+				<td th:text="${prendaTalla.talla.medida}">Medida</td>
+				<td th:text="${prendaTalla.precio}">Precio</td>
+				<td th:text="${prendaTalla.cantidad}">Cantidad</td>
+				<td><a
+					th:href="@{'/categoria/'+ ${prendaTalla.prenda.categoria.id}+'/prenda/' + ${prendaTalla.prenda.id} + '/talla/' + ${prendaTalla.talla.id} + '/editar'}"
+					sec:authorize="hasAuthority('ADMIN')" class="btn btn-info">Editar</a>
+					<a
+					th:href="@{'/categoria/'+ ${prendaTalla.prenda.categoria.id}+'/prenda/' + ${prendaTalla.prenda.id} + '/talla/' + ${prendaTalla.talla.id} + '/ocultar'}"
+					sec:authorize="hasAuthority('ADMIN')" class="btn btn-danger">Eliminar</a></td>
+
+
+
+			</tr>
+		</tbody>
+	</table>
+	<div class="text-center">
+		<a
+			th:href="@{'/categoria/' + ${prenda.getCategoria.getId()} + '/prenda/' + ${prendaId} + '/talla/registrar'}"
+			sec:authorize="hasAuthority('ADMIN')" class="btn btn-primary">Registrar
+			Nueva Talla</a>
+	</div>
+</div>
+</body>
+</html>

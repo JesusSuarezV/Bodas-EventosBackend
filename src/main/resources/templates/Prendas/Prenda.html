@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Lista de Prendas</title>
+<div th:replace="Footer.html"></div>
+<div class="container">
+	<h1>Lista de Prendas</h1>
+	<br> <br>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Nombre</th>
+				<th>Categoria</th>
+				<th>Imagen</th>
+				<th>Acción</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="prenda : ${prendas}">
+
+				<td th:text="${prenda.nombre}">Nombre</td>
+				<td th:text="${prenda.categoria.nombre}">ID Categoria</td>
+
+				<td><img
+					th:src="'data:image/jpeg;base64,' + ${prenda.getBase64(prenda.imagen)}"
+					alt="Imagen de la categoría" width="170" height="170"></td>
+				<td><a th:href="@{/prendas/editar/{id}(id=${prenda.id})}"
+					sec:authorize="hasAuthority('ADMIN')" class="btn btn-info">Editar</a>
+					<a th:href="@{/prendas/{id}(id=${prenda.id})}"
+					sec:authorize="hasAuthority('ADMIN')" class="btn btn-danger">Eliminar</a>
+					<a th:href="@{'/categoria/' + ${categoria.id} + '/prenda/' + ${prenda.id}}"
+					class="btn btn-success	">Ver Tallas</a></td>
+
+			</tr>
+		</tbody>
+	</table>
+</div>
+</body>
+</html>

@@ -2,16 +2,19 @@ package com.app.web.entidad;
 
 import java.sql.Types;
 import java.util.Base64;
+import java.util.List;
 
-import org.hibernate.annotations.JdbcType;
-import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Type;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
-import jakarta.persistence.Table;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "Categoria")
@@ -21,11 +24,10 @@ public class Categoria {
 	private int id;
 	@Column(name = "Nombre")
 	private String nombre;
-	@Lob
-	@JdbcTypeCode(Types.VARBINARY)
 	@Column(name = "Imagen")
 	private byte[] imagen;
-
+	@Column(name = "visibilidad")
+	private boolean visibilidad;
 	public Categoria() {
 
 	}
@@ -37,11 +39,12 @@ public class Categoria {
 		
 	}
 
-	public Categoria(int id, String nombre, byte[] imagen) {
+	public Categoria(int id, String nombre, byte[] imagen, boolean visibilidad) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.imagen = imagen;
+		this.visibilidad = visibilidad;
 	}
 
 	public int getId() {
@@ -66,6 +69,15 @@ public class Categoria {
 
 	public void setImagen(byte[] imagen) {
 		this.imagen = imagen;
+	}
+	
+
+	public boolean isVisibilidad() {
+		return visibilidad;
+	}
+
+	public void setVisibilidad(boolean visibilidad) {
+		this.visibilidad = visibilidad;
 	}
 
 	@Override

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Registro de Prenda</title>
+<div th:replace="Footer.html"></div>
+<div class="container">
+	<h1>Registro de Prenda</h1>
+	<br> <br>
+	<form th:action="@{/prendas}" th:object="${prenda}" method="POST"
+		enctype="multipart/form-data">
+		<div class="form-group" style="display: none;">
+			<label for="id">ID:</label>
+			<!-- Ocultar el label -->
+			<input type="number" class="form-control" id="id" name="id" value="0"
+				required>
+		</div>
+
+		<div class="form-group">
+			<label for="nombre">Nombre:</label> <input type="text"
+				class="form-control" id="nombre" name="nombre" required>
+		</div>
+
+		<div class="form-group">
+			<label for="id_categoria">Categoría del Traje:</label> <select
+				class="form-control" id="id_categoria" name="id_categoria" required>
+				<option th:each="categoria : ${categorias}"
+					th:value="${categoria.id}" th:text="${categoria.nombre}"></option>
+			</select>
+		</div>
+
+		<div class="form-group">
+			<label for="imagen">Imagen:</label> <input type="file"
+				class="form-control-file" id="imagen" name="imagen" required>
+		</div>
+		<button type="submit" class="btn btn-primary">Guardar</button>
+	</form>
+</div>
+</body>
+</html>
+

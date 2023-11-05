@@ -18,8 +18,7 @@ public class CategoriaServicio {
     
 
     public List<Categoria> listarTodasLasCategorias() {
-        return repositorio.findAll();
-        
+        return repositorio.findByVisibilidadTrue();
         
         
     }
@@ -42,11 +41,18 @@ public class CategoriaServicio {
     }
 
     public Categoria actualizarCategoria(Categoria categoria) {
+    	System.out.println("OlaKAse3");
         return repositorio.save(categoria);
     }
 
-    public void eliminarCategoria(int id) {
-    	repositorio.deleteById(id);
+    public void ocultarCategoria(int id) {
+    	repositorio.softDelete(id);
+    }
+    
+    public int obtenerMaximoId() {
+    	
+    	return repositorio.obtenerMaximoId();
+    	
     }
     
     

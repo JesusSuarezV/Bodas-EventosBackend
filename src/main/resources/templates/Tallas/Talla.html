@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Lista de Tallas</title>
+<div th:replace="Footer.html"></div>
+
+<div class="container">
+	<h1>Lista de Tallas</h1>
+	<br> <br>
+	<table class="table table-striped">
+		<br>
+		<br>
+		<thead>
+			<tr>
+				<th>Nombre</th>
+				<th>Acción</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="talla : ${tallas}">
+				<td th:text="${talla.medida}">Medida</td>
+
+				<td><a th:href="@{/tallas/editar/{id}(id=${talla.id})}"
+					sec:authorize="hasAuthority('ADMIN')" class="btn btn-info">Editar</a><a
+					th:href="@{/tallas/{id}(id=${talla.id})}"
+					sec:authorize="hasAuthority('ADMIN')" class="btn btn-danger">Eliminar</a>
+				</td>
+
+			</tr>
+		</tbody>
+	</table>
+</div>
+</body>
+</html>
