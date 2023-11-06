@@ -68,11 +68,9 @@ public class PrendaControlador {
 	@PostMapping("/prenda/{id}/actualizar")
 	public String actualizarPrenda(@PathVariable int id, @RequestParam("nombre") String nombre,
 			@RequestParam("imagen") MultipartFile imagen) throws IOException {
-		// Validar si la categoría con el ID proporcionado existe
 		System.out.println("TEST2");
 		Prenda prendaExistente = servicio.obtenerPrendaPorId(id);
 
-		// Actualizar los campos de la categoría existente
 		prendaExistente.setNombre(nombre);
 		prendaExistente.setImagen(imagen.getBytes());
 		int idCategoria = prendaExistente.getCategoria().getId();
@@ -91,14 +89,13 @@ public class PrendaControlador {
 	
 	@GetMapping("/categoria/{categoriaId}/prenda")
 	public String mostrarPrendasDeCategoria(@PathVariable int categoriaId, Model model) {
-	    // Lógica para obtener las prendas de la categoría utilizando el ID
 	    Categoria categoria = categoriaServicio.obtenerCategoriaPorId(categoriaId);
 	    List<Prenda> prendas = servicio.obtenerPrendasPorCategoria(categoria);
 
 	    model.addAttribute("categoria", categoria);
 	    model.addAttribute("prendas", prendas);
 
-	    return "Prendas/Prenda"; // Nombre de la vista para mostrar las prendas
+	    return "Prendas/Prenda"; 
 	}
 	
 

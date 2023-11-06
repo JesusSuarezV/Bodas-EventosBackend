@@ -47,7 +47,7 @@ public class PrendaTallaControlador {
 		model.addAttribute("prenda", prenda);
 		model.addAttribute("prendaTallas", prendaTallas);
 
-		return "Prendas/PrendaTalla"; // Nombre de la vista para mostrar las prendas
+		return "Prendas/PrendaTalla"; 
 	}
 
 	@GetMapping("/categoria/{categoriaId}/prenda/{prendaId}/talla/registrar")
@@ -63,7 +63,7 @@ public class PrendaTallaControlador {
 		modelo.addAttribute("categoria", categoria);
 		modelo.addAttribute("prenda", prenda);
 
-		return "Prendas/Crear_PrendaTalla"; // Plantilla para la edición
+		return "Prendas/Crear_PrendaTalla"; 
 	}
 
 	@GetMapping("/categoria/{categoriaId}/prenda/{prendaId}/talla/{tallaId}/editar")
@@ -72,7 +72,7 @@ public class PrendaTallaControlador {
 		PrendaTalla prendaTalla = servicio.obtenerPrendaTallaPorId(new PrendaTallaId(
 				prendaServicio.obtenerPrendaPorId(prendaId), tallaServicio.obtenerTallaPorId(tallaId)));
 		model.addAttribute(prendaTalla);
-		return "Prendas/Editar_PrendaTalla"; // Plantilla para la edición
+		return "Prendas/Editar_PrendaTalla";
 	}
 
 	@PostMapping("/categoria/{categoriaId}/prenda/{prendaId}/talla/guardar")
@@ -95,7 +95,7 @@ public class PrendaTallaControlador {
 		PrendaTallaId prendaTallaId = new PrendaTallaId(prenda, talla);
 		PrendaTalla prendaTallaExistente = servicio.obtenerPrendaTallaPorId(prendaTallaId);
 
-		// Actualizar los campos de la categoría existente
+	
 		prendaTallaExistente.setCantidad(cantidad);
 		prendaTallaExistente.setPrecio(precio);
 		servicio.actualizarPrendaTalla(prendaTallaExistente);

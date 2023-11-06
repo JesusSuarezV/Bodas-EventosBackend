@@ -37,7 +37,7 @@ public class CategoriaControlador {
 	public String listarCategorias(Model model) {
 
 		model.addAttribute("categorias", servicio.listarTodasLasCategorias());
-		return "Categorias/Categoria"; // Este es el nombre de la plantilla Thymeleaf
+		return "Categorias/Categoria";
 	}
 
 	@GetMapping("/categoria/nueva_categoria")
@@ -60,7 +60,6 @@ public class CategoriaControlador {
 		// Convierte la imagen a un array de bytes
 		byte[] imagenBytes = imagen.getBytes();
 
-		// Crea una instancia de Categoria y asigna los valores
 		Categoria categoria = new Categoria(id, nombre, imagenBytes, true);
 
 		servicio.guardarCategoria(categoria);
@@ -78,11 +77,9 @@ public class CategoriaControlador {
 	@PostMapping("/categoria/{id}/actualizar")
 	public String actualizarCategoria(@PathVariable int id, @RequestParam("nombre") String nombre,
 			@RequestParam("imagen") MultipartFile imagen) throws IOException {
-		// Validar si la categoría con el ID proporcionado existe
 		System.out.println("TEST2");
 		Categoria categoriaExistente = servicio.obtenerCategoriaPorId(id);
 
-		// Actualizar los campos de la categoría existente
 		categoriaExistente.setNombre(nombre);
 		categoriaExistente.setImagen(imagen.getBytes());
 
@@ -104,7 +101,7 @@ public class CategoriaControlador {
 				prendaTallaServicio.ocultarPrendaTalla(prendaTalla);
 			}
 			prenda.setVisibilidad(false);
-			prendaServicio.guardarPrenda(prenda); // Puedes guardar la prenda para actualizar su visibilidad
+			prendaServicio.guardarPrenda(prenda); 
 		}
 
 		servicio.ocultarCategoria(id);

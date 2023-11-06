@@ -61,11 +61,8 @@ public class TallaControlador {
 
 	@PostMapping("/tallas/{id}")
 	public String actualizarTalla(@PathVariable int id, @RequestParam("medida") String medida) throws IOException {
-		// Validar si la categoría con el ID proporcionado existe
 		System.out.println("TEST2");
 		Talla tallaExistente = servicio.obtenerTallaPorId(id);
-
-		// Actualizar los campos de la categoría existente
 		tallaExistente.setMedida(medida);
 		servicio.actualizarTalla(tallaExistente);
 

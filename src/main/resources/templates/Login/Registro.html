@@ -18,9 +18,9 @@
 				</div>
 
 				<h1>Regístro de Auxiliares</h1>
-				<form th:action="@{/registro}" method="post" th:object="${usuario}">
+				<form th:action="@{/registro/guardar}" method="post" th:object="${usuario}">
 					<div class="form-group">
-						<label class="control-label" for="nombre">Cedula : </label> <input id="cedula" type="number"
+						<label class="control-label" for="cedula">Cedula : </label> <input id="cedula" type="number"
 							class="form-control" th:field="*{cedula}" required autofocus="autofocus">
 					</div>
 

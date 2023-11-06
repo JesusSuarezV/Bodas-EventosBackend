@@ -12,7 +12,7 @@ import com.app.web.servicio.PrendaServicio;
 import com.app.web.servicio.UsuarioServicio;
 
 @Controller
-@RequestMapping("/registro")
+
 public class RegistroUsuarioControlador {
 	@Autowired
 	private UsuarioServicio servicio;
@@ -21,13 +21,14 @@ public class RegistroUsuarioControlador {
 	public UsuarioRegistroDTO retornarNuevoUsuarioRegistroDTO() {
 		return new UsuarioRegistroDTO();
 	}
-	@GetMapping
+	
+	@GetMapping("/registro")
 	public String mostrarFormularioDeRegistro(){
 		
 		return "/Login/Registro";
 	}
 	
-	@PostMapping
+	@PostMapping("/registro/guardar")
 	public String registrarCuentaDeUsuario(@ModelAttribute("usuario") UsuarioRegistroDTO registroDTO) {
 		servicio.guardarUsuario(registroDTO);
 		return "redirect:/registro?exito";
