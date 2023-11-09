@@ -25,7 +25,7 @@ public class RegistroUsuarioControlador {
 	@GetMapping("/registro")
 	public String mostrarFormularioDeRegistro(){
 		
-		return "/Login/Registro";
+		return "Login/Registro";
 	}
 	
 	@PostMapping("/registro/guardar")
